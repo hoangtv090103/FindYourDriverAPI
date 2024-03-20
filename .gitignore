@@ -1,0 +1,7 @@
+# Env
+.env
+
+# Build
+node_modules
+
+# Logs
