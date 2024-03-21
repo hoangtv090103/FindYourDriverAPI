@@ -8,9 +8,9 @@ const customerSchema = new Schema({
     ref: 'User',
     required: true
   },
-  defaultAddress: {
-    type: String
-  }
+  defaultAddress: String,
+  latitude: Number,
+  longitude: Number
 });
 
 const Customer = mongoose.model('Customer', customerSchema);

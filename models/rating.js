@@ -22,9 +22,7 @@ const ratingSchema = new Schema({
     type: Number,
     required: true
   },
-  comment: {
-    type: String
-  },
+  comment: String,
   ratingTime: {
     type: Date,
     default: Date.now

@@ -13,6 +13,11 @@ const driverSchema = new Schema({
     ref: 'Vehicle',
     required: true
   },
+  licenseNumber: { // Số bằng lái
+    type: String,
+    required: true,
+    unique: true
+  },
   state: { // Tài xế có thể ở trạng thái "available" hoặc "unavailable"
     type: String,
     required: true
@@ -20,7 +25,9 @@ const driverSchema = new Schema({
   rating: { // Đánh giá của khách hàng
     type: Number,
     default: 0
-  }
+  },
+  latitude: Number, // Vĩ độ
+  longitude: Number, // Kinh độ
 });
 
 const Driver = mongoose.model('Driver', driverSchema);
