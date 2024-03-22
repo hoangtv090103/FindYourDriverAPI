@@ -9,6 +9,8 @@ const driverRouter = require('./routes/driverRoute');
 const vehicleTypeRouter = require('./routes/vehicleTypeRoute');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { login, register } = require('./auth/auth');
+const authMiddleware = require('./middlewares/authMiddleware');
 
 dotenv.config();
 
@@ -28,3 +30,10 @@ database.connect();
 app.use('/users', userRouter);
 app.use('/drivers', driverRouter);
 app.use('/vehicle-type', vehicleTypeRouter);
+
+app.get('/verifyToken', authMiddleware, (req, res) => {
+  res.json('Token is valid');
+});
+
+app.post('/login', login);
+app.post('/register', register);
