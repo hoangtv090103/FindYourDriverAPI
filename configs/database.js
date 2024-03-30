@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connect = async () => {
   try {
-    const connectionStr = `mongodb://${process.env.MONGODB_URL}:${process.env.MONGODB_PORT}/${process.env.MONGODB_NAME}`;
+    const connectionStr = process.env.MONGO_URI;
 
     console.log(connectionStr);
 
