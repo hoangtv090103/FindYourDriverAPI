@@ -21,8 +21,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(port, async () => {
+  try {
+    await database.connect();
+    console.log(`Server is running on port ${port}`);
+  } catch (err) {
+    console.error(`Failed to connect to the database: ${err}`);
+  }
 });
 
 database.connect();
