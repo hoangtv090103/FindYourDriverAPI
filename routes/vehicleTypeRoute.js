@@ -9,4 +9,9 @@ router.get('/', (req, res, next) => {
   next();
 }, vehicleTypeController.getAllVehicleTypes);
 
+router.get('/:id', vehicleTypeController.getVehicleTypeById);
+router.post('/', vehicleTypeController.addVehicleType);
+router.put('/:id', vehicleTypeController.updateVehicleType);
+router.delete('/:id', vehicleTypeController.deleteVehicleType);
+
 module.exports = router;
