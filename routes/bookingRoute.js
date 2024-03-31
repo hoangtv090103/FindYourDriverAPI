@@ -5,8 +5,8 @@ const bookingController = require('../controllers/bookingController');
 
 router.get('/', bookingController.getAllBookings);
 router.get('/:id', bookingController.getBookingById);
-router.post('/add', bookingController.addBooking);
-router.put('/update/:id', bookingController.updateBooking);
-router.delete('/delete/:id', bookingController.deleteBooking);
+router.post('/', bookingController.addBooking);
+router.put('/:id', bookingController.updateBooking);
+router.delete('/:id', bookingController.deleteBooking);
 
 module.exports = router;

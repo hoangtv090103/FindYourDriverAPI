@@ -5,8 +5,8 @@ const driverController = require('../controllers/driverController');
 
 router.get('/', driverController.getAllDrivers);
 router.get('/:id', driverController.getDriverById);
-router.post('/add', driverController.addDriver);
-router.put('/update/:id', driverController.updateDriver);
-router.delete('/delete/:id', driverController.deleteDriver);
+router.post('/', driverController.addDriver);
+router.put('/:id', driverController.updateDriver);
+router.delete('/:id', driverController.deleteDriver);
 
 module.exports = router;
