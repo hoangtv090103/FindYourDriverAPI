@@ -6,7 +6,7 @@ const getAllDrivers = async (req, res) => {
     const drivers = await Driver.find({});
     res.json(drivers);
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -15,7 +15,7 @@ const getDriverById = async (req, res) => {
     const driver = await Driver.findById(req.params.id);
     res.json(driver);
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -42,7 +42,7 @@ const addDriver = async (req, res) => {
     await newDriver.save();
     res.json('Driver added!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -54,7 +54,7 @@ const updateDriver = async (req, res) => {
     driver.save();
     res.json('Driver updated!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -63,7 +63,7 @@ const deleteDriver = async (req, res) => {
     await Driver.findByIdAndDelete(req.params.id);
     res.json('Driver deleted!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -75,7 +75,7 @@ const getDriverLocation = async (req, res) => {
       longitude: driver.longitude
     });
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 };
 
@@ -87,7 +87,7 @@ const updateDriverLocation = async (req, res) => {
     driver.save();
     res.json('Driver location updated!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 };
 

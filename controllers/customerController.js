@@ -6,7 +6,7 @@ const getAllCustomers = async (req, res) => {
     const customers = await Customer.find({});
     res.json(customers);
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -16,7 +16,7 @@ const getCustomerById = async (req, res) => {
     const customer = await Customer.findById(req.params.id);
     res.json(customer);
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -42,7 +42,7 @@ const addCustomer = async (req, res) => {
     await newCustomer.save();
     res.json('Customer added!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -54,7 +54,7 @@ const updateCustomer = async (req, res) => {
     customer.save();
     res.json('Customer updated!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -63,7 +63,7 @@ const deleteCustomer = async (req, res) => {
     await Customer.findByIdAndDelete(req.params.id);
     res.json('Customer deleted!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 }
 
@@ -76,7 +76,7 @@ const getCustomerLocation = async (req, res) => {
       longitude: customer.longitude
     });
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 };
 
@@ -88,7 +88,7 @@ const updateCustomerLocation = async (req, res) => {
     customer.save();
     res.json('Customer location updated!');
   } catch (err) {
-    res.status(400).json('Error: ' + err);
+    res.status(400).json(`Error: ${err}`);
   }
 };
 
