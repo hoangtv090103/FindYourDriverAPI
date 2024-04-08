@@ -23,15 +23,21 @@ const getCustomerById = async (req, res) => {
 const addCustomer = async (req, res) => {
   try {
     const { defaultAddress } = req.body;
-    const user = new User({
-      fullName: req.body.fullName,
-      email: req.body.email,
-      phone: req.body.phone,
-      password: req.body.password
+		if (!req.body.userId) {
+			const user = new User({
+				fullName: req.body.fullName,
+				email: req.body.email,
+				phone: req.body.phone,
+				password: hashPassword(req.body.password),
+			});
+      await user.save();
 
-    });
+		} else {
+			const user = await User.findById(req.body.userId).catch((err) => {
+				res.status(400).json(`Error: ${err}`);
+			});
+		}
 
-    await user.save();
 
 
     const newCustomer = new Customer({

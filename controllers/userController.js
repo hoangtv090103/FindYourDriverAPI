@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
+const { hashPassword } = require("../utils/hashPassword");
 const getAllUsers = async (req, res) => {
 	try {
 		const users = await User.find({});
@@ -23,8 +23,7 @@ const getUserById = async (req, res) => {
 
 const addUser = async (req, res) => {
 	const { fullName, email, phone, password } = req.body;
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(password, salt);
+	const hashedPassword = await hashPassword(password);
 	const newUser = new User({
 		fullName,
 		email,

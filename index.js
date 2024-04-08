@@ -1,20 +1,27 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const database = require('./configs/database');
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const database = require("./configs/database");
 const app = express();
 const port = process.env.PORT || 3000;
-const userRouter = require('./routes/userRoute');
-const driverRouter = require('./routes/driverRoute');
-const vehicleTypeRouter = require('./routes/vehicleTypeRoute');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { login, register } = require('./auth/auth');
-const authMiddleware = require('./middlewares/authMiddleware');
+
+const userRouter = require("./routes/userRoute");
+const driverRouter = require("./routes/driverRoute");
+const vehicleTypeRouter = require("./routes/vehicleTypeRoute");
+const customerRouter = require("./routes/customerRoute");
+const trackingRouter = require("./routes/trackingRoute");
+const vehicleRouter = require("./routes/vehicleRoute");
+const findDriverRoute = require("./routes/findDriverRoute");
+
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
+const { login, register } = require("./auth/auth");
+const authMiddleware = require("./middlewares/authMiddleware");
 
 dotenv.config();
 
-app.set('view engine', 'ejs')
+app.set("view engine", "ejs");
 
 app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.json());
@@ -32,13 +39,17 @@ app.listen(port, async () => {
 
 database.connect();
 
-app.use('/users', userRouter);
-app.use('/drivers', driverRouter);
-app.use('/vehicle-type', vehicleTypeRouter);
-
-app.get('/verifyToken', authMiddleware, (req, res) => {
-  res.json('Token is valid');
+app.use("/users", userRouter);
+app.use("/vehicle-type", vehicleTypeRouter);
+app.use("/vehicles", vehicleRouter);
+app.use("/drivers", driverRouter);
+app.use("/customers", customerRouter);
+app.use("/tracking", trackingRouter);
+app.get("/verifyToken", authMiddleware, (req, res) => {
+  res.json("Token is valid");
 });
 
-app.post('/login', login);
-app.post('/register', register);
+app.get("/find-driver", findDriverRoute);
+
+app.post("/login", login);
+app.post("/register", register);
