@@ -19,7 +19,7 @@ const driverSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Vehicle",
   },
-  
+
   licenseNumber: {
     // Số bằng lái
     type: String,

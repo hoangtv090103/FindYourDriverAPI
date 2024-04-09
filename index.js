@@ -3,8 +3,10 @@ const dotenv = require("dotenv");
 const database = require("./configs/database");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
 const app = express();
 const port = Number(process.env.PORT) || 3000;
+
 
 const userRouter = require("./routes/userRoute");
 const driverRouter = require("./routes/driverRoute");
@@ -13,6 +15,8 @@ const customerRouter = require("./routes/customerRoute");
 const trackingRouter = require("./routes/trackingRoute");
 const vehicleRouter = require("./routes/vehicleRoute");
 const findDriverRouter = require("./routes/findDriverRoute");
+
+
 
 const { login, register } = require("./auth/auth");
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -26,6 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 // Middleware
+
 
 app.listen(port, async () => {
   try {

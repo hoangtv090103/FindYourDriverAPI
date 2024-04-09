@@ -1,13 +1,12 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
   try {
     console.log("Logging in");
-    const { email, phone, password } = req.body;
+    const { phoneEmail, password } = req.body;
     const user = await User.findOne({
-      $or: [{ email: email }, { phone: phone }],
+      $or: [{ email: phoneEmail }, { phone: phoneEmail }],
     });
     if (!user) {
       return res.status(400).json("Email or phone is wrong");
@@ -16,9 +15,8 @@ const login = async (req, res) => {
     if (!validPass) {
       return res.status(400).json("Password is wrong");
     }
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-    console.log(token);
-    res.header("auth-token", token).json(token);
+
+    res.json(user);
   } catch (err) {
     console.log(err);
     res.status(400).json(`Error: ${err}`);

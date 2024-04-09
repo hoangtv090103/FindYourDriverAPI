@@ -1,6 +1,6 @@
-const Customer = require('../models/customer');
-const User = require('../models/user');
-const { hashPassword } = require('../utils/hashPassword');
+const Customer = require("../models/customer");
+const User = require("../models/user");
+const { hashPassword } = require("../utils/hashPassword");
 
 const getAllCustomers = async (req, res) => {
   try {
@@ -9,50 +9,46 @@ const getAllCustomers = async (req, res) => {
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
-}
+};
 
 const getCustomerById = async (req, res) => {
-
   try {
     const customer = await Customer.findById(req.params.id);
     res.json(customer);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
-}
+};
 
 const addCustomer = async (req, res) => {
   try {
     const { defaultAddress } = req.body;
     let user;
-		if (!req.body.userId) {
-			const newUser = new User({
-				email: req.body.email,
-				phone: req.body.phone,
-				password: await hashPassword(req.body.password),
-			});
+    if (!req.body.userId) {
+      const newUser = new User({
+        email: req.body.email,
+        phone: req.body.phone,
+        password: await hashPassword(req.body.password),
+      });
       user = await newUser.save();
-
-		} else {
-			user = await User.findById(req.body.userId).catch((err) => {
-				res.status(400).json(`Error: ${err}`);
-			});
-		}
-
-
+    } else {
+      user = await User.findById(req.body.userId).catch((err) => {
+        res.status(400).json(`Error: ${err}`);
+      });
+    }
 
     const newCustomer = new Customer({
       fullName: req.body.fullName,
       userId: user._id,
-      defaultAddress
+      defaultAddress,
     });
 
     await newCustomer.save();
-    res.json('Customer added!');
+    res.json("Customer added!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
-}
+};
 
 const updateCustomer = async (req, res) => {
   try {
@@ -60,20 +56,20 @@ const updateCustomer = async (req, res) => {
     customer.userId = req.body.userId;
     customer.defaultAddress = req.body.defaultAddress;
     customer.save();
-    res.json('Customer updated!');
+    res.json("Customer updated!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
-}
+};
 
 const deleteCustomer = async (req, res) => {
   try {
     await Customer.findByIdAndDelete(req.params.id);
-    res.json('Customer deleted!');
+    res.json("Customer deleted!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
-}
+};
 
 const getCustomerLocation = async (req, res) => {
   try {
@@ -81,7 +77,7 @@ const getCustomerLocation = async (req, res) => {
 
     res.json({
       latitude: customer.latitude,
-      longitude: customer.longitude
+      longitude: customer.longitude,
     });
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
@@ -94,7 +90,7 @@ const updateCustomerLocation = async (req, res) => {
     customer.latitude = req.body.latitude;
     customer.longitude = req.body.longitude;
     customer.save();
-    res.json('Customer location updated!');
+    res.json("Customer location updated!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -107,5 +103,5 @@ module.exports = {
   updateCustomer,
   deleteCustomer,
   getCustomerLocation,
-  updateCustomerLocation
+  updateCustomerLocation,
 };

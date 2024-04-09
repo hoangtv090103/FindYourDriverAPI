@@ -40,11 +40,11 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 const findDriverController = async (req, res) => {
   try {
     const { pickupLat, pickupLng } = req.body;
-    
+
     const driver = await Driver.find({
       available: true,
     });
-    
+
     if (!driver) {
       return res.status(400).json("No driver found");
     }
@@ -64,7 +64,6 @@ const findDriverController = async (req, res) => {
     // return the nearest driver
     distList.sort((a, b) => a.distance - b.distance);
     res.json(distList[0]);
-
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

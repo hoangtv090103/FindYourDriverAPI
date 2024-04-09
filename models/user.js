@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -6,27 +6,27 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   phone: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   registrationDate: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   isDriver: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
