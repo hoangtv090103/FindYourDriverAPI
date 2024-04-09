@@ -1,5 +1,6 @@
 const Customer = require('../models/customer');
 const User = require('../models/user');
+const { hashPassword } = require('../utils/hashPassword');
 
 const getAllCustomers = async (req, res) => {
   try {
@@ -23,16 +24,17 @@ const getCustomerById = async (req, res) => {
 const addCustomer = async (req, res) => {
   try {
     const { defaultAddress } = req.body;
+    let user;
 		if (!req.body.userId) {
-			const user = new User({
+			const newUser = new User({
 				email: req.body.email,
 				phone: req.body.phone,
-				password: hashPassword(req.body.password),
+				password: await hashPassword(req.body.password),
 			});
-      await user.save();
+      user = await newUser.save();
 
 		} else {
-			const user = await User.findById(req.body.userId).catch((err) => {
+			user = await User.findById(req.body.userId).catch((err) => {
 				res.status(400).json(`Error: ${err}`);
 			});
 		}
@@ -40,6 +42,7 @@ const addCustomer = async (req, res) => {
 
 
     const newCustomer = new Customer({
+      fullName: req.body.fullName,
       userId: user._id,
       defaultAddress
     });
