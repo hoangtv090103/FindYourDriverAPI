@@ -1,4 +1,4 @@
-const express = require("express");
+const Driver = require("../models/driver");
 
 /**
  * Calculate the distance between two points on the Earth given their latitude and longitude coordinates.
@@ -26,6 +26,8 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   dist = Math.acos(dist);
   dist = (dist * 180) / Math.PI;
   dist = dist * 60 * 1.1515;
+
+  return dist;
 };
 
 /**
@@ -35,26 +37,36 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
  * @param {Object} res - the response object
  * @return {Array} an array of drivers sorted by distance
  */
-const findDriver = async (req, res) => {
+const findDriverController = async (req, res) => {
   try {
-    const { pickupLat, pickupLng, dropLat, dropLng } = req.body;
-    const driver = await Driver.find({ state: 1 });
-    const driverList = driver.map((driver) => {
-      calculateDistance(
-        pickupLat,
-        pickupLng,
-        driver.latitude,
-        driver.longitude
-      );
-      return driver;
+    const { pickupLat, pickupLng } = req.body;
+    const driver = await Driver.find({
+      state: true,
     });
-    // Sort by distance
-    driverList.sort((a, b) => a.distance - b.distance);
+    
+    if (!driver) {
+      return res.status(400).json("No driver found");
+    }
 
-    res.json(driverList);
+    const distList = driver.map((driver) => {
+      return {
+        distance: calculateDistance(
+          pickupLat,
+          pickupLng,
+          driver.latitude,
+          driver.longitude
+        ),
+        driver: driver,
+      };
+    });
+
+    // return the nearest driver
+    distList.sort((a, b) => a.distance - b.distance);
+    res.json(distList[0]);
+
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
 
-module.exports = { findDriver };
+module.exports = { findDriverController };

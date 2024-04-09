@@ -23,6 +23,9 @@ const getUserById = async (req, res) => {
 
 const addUser = async (req, res) => {
 	const { fullName, email, phone, password } = req.body;
+	if (!fullName || !email || !phone || !password) {
+		return res.status(400).json(`Missing required fields (fullName, email, phone, password)`);
+	}
 	const hashedPassword = await hashPassword(password);
 	const newUser = new User({
 		fullName,
