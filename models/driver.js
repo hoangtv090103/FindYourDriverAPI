@@ -3,23 +3,30 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const driverSchema = new Schema({
+  // Get fullName from user
+  fullName: {
+    type: String,
+    required: true,
+  },
+
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
+
   vehicleId: {
     type: Schema.Types.ObjectId,
     ref: "Vehicle",
   },
+  
   licenseNumber: {
     // Số bằng lái
     type: String,
     required: true,
     unique: true,
   },
-  state: {
-    // Tài xế có thể ở trạng thái "available" hoặc "unavailable"
+  available: {
     type: Boolean,
     default: true,
   },

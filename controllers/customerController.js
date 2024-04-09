@@ -25,7 +25,6 @@ const addCustomer = async (req, res) => {
     const { defaultAddress } = req.body;
 		if (!req.body.userId) {
 			const user = new User({
-				fullName: req.body.fullName,
 				email: req.body.email,
 				phone: req.body.phone,
 				password: hashPassword(req.body.password),

@@ -3,10 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  fullName: {
-    type: String,
-    required: true
-  },
   email: {
     type: String,
     required: true,
@@ -24,6 +20,10 @@ const userSchema = new Schema({
   registrationDate: {
     type: Date,
     default: Date.now
+  },
+  isDriver: {
+    type: Boolean,
+    default: false
   }
 });
 

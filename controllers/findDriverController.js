@@ -40,8 +40,9 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 const findDriverController = async (req, res) => {
   try {
     const { pickupLat, pickupLng } = req.body;
+    
     const driver = await Driver.find({
-      state: true,
+      available: true,
     });
     
     if (!driver) {

@@ -25,10 +25,10 @@ const addDriver = async (req, res) => {
 	try {
 		if (!req.body.userId) {
 			const newUser = new User({
-				fullName: req.body.fullName,
 				email: req.body.email,
 				phone: req.body.phone,
 				password: await hashPassword(req.body.password),
+				isDriver: true,
 			});
 			user = await newUser.save();
 		} else {
@@ -37,11 +37,12 @@ const addDriver = async (req, res) => {
 			});
 		}
 
-		const { licenseNumber } = req.body;
+		const { fullName, licenseNumber } = req.body;
 
 		const newDriver = new Driver({
-			userId: user._id,
+			fullName: fullName,
 			licenseNumber: licenseNumber,
+			userId: user._id,
 		});
 
 		await newDriver.save();
