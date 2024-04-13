@@ -10,25 +10,40 @@ const login = async (req, res) => {
       $or: [{ email: phoneEmail }, { phone: phoneEmail }],
     });
     if (!user) {
-      return res.status(400).json("Email or phone is wrong");
+      return res.status(400).json({
+        success: false,
+        message: "Email or phone is wrong",
+      });
     }
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) {
-      return res.status(400).json("Password is wrong");
+      return res.status(400).json({
+        success: false,
+        message: "Password is wrong",
+      });
     }
+
+    const data = {
+      success: true,
+      userId: user._id,
+      isDriver: user.isDriver,
+    };
 
     if (user.isDriver) {
       const driver = await Driver.findOne({ userId: user._id });
-      return res.status(200).json(driver || null);
+      data.driver = driver || null;
+    } else {
+      const customer = await Customer.findOne({ userId: user._id });
+      data.customer = customer || null;
     }
 
-    const customer = await Customer.findOne({ userId: user._id });
-    return res.status(200).json(customer || null);
+    return res.status(200).json(data);
   } catch (err) {
     console.log(err);
-    res.status(400).json(`Error: ${err}`);
+    res.status(400).json({ success: false, message: `Error: ${err}` });
   }
 };
+
 
 const register = async (req, res) => {
   const { fullName, email, phone, password } = req.body;
