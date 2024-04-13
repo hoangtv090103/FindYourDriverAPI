@@ -47,6 +47,9 @@ const addUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  if ('password' in req.body) {
+    req.body.password = await hashPassword(req.body.password);
+  }
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

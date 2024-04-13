@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const Customer = require("../models/customer");
+const Driver = require("../models/driver");
 const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
@@ -15,7 +17,13 @@ const login = async (req, res) => {
       return res.status(400).json("Password is wrong");
     }
 
-    res.status(200).json(user);
+    if (user.isDriver) {
+      const driver = await Driver.findOne({ userId: user._id });
+      return res.status(200).json(driver || null);
+    }
+
+    const customer = await Customer.findOne({ userId: user._id });
+    return res.status(200).json(customer || null);
   } catch (err) {
     console.log(err);
     res.status(400).json(`Error: ${err}`);
