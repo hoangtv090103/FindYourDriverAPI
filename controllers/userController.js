@@ -23,11 +23,13 @@ const getUserById = async (req, res) => {
 
 const addUser = async (req, res) => {
   const { fullName, email, phone, password } = req.body;
+
   if (!fullName || !email || !phone || !password) {
     return res
       .status(400)
-      .json(`Missing required fields (fullName, email, phone, password)`);
+      .json("Please add all fields (fullName, email, phone, password)");
   }
+
   const hashedPassword = await hashPassword(password);
   const newUser = new User({
     fullName,
@@ -46,12 +48,9 @@ const addUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    user.fullName = req.body.fullName;
-    user.email = req.body.email;
-    user.phone = req.body.phone;
-    user.password = req.body.password;
-    user.save();
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     res.json("User updated!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);

@@ -6,3 +6,4 @@ const { findDriverController } = require("../controllers/findDriverController");
 router.post("/", findDriverController);
 
 module.exports = router;
+

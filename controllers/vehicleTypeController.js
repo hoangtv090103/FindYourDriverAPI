@@ -12,7 +12,7 @@ const getAllVehicleTypes = async (req, res) => {
 const getVehicleTypeById = async (req, res) => {
   try {
     const vehicleTypeId = await vehicleType.findById(req.params.id);
-    res.json(vehicleTypeId);
+    res.status(200).json(vehicleTypeId);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -28,7 +28,7 @@ const addVehicleType = async (req, res) => {
     });
 
     await newVehicleType.save();
-    res.json("Vehicle type added!");
+    res.status(200).json(`Vehicle type {${name}} added!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -40,7 +40,7 @@ const updateVehicleType = async (req, res) => {
     vehicleTypeId.name = req.body.name;
     vehicleTypeId.description = req.body.description;
     vehicleTypeId.save();
-    res.json("Vehicle type updated!");
+    res.status(200).json(`Vehicle type {${vehicleTypeId.name}} updated!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -50,7 +50,7 @@ const deleteVehicleType = async (req, res) => {
   try {
     const vehicleTypeId = await vehicleType.findById(req.params.id);
     vehicleTypeId.delete();
-    res.json("Vehicle type deleted!");
+    res.status(200).json("Vehicle type deleted!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

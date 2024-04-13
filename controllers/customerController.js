@@ -5,7 +5,7 @@ const { hashPassword } = require("../utils/hashPassword");
 const getAllCustomers = async (req, res) => {
   try {
     const customers = await Customer.find({});
-    res.json(customers);
+    res.status(200).json(customers);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -14,7 +14,7 @@ const getAllCustomers = async (req, res) => {
 const getCustomerById = async (req, res) => {
   try {
     const customer = await Customer.findById(req.params.id);
-    res.json(customer);
+    res.status(200).json(customer);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -44,7 +44,7 @@ const addCustomer = async (req, res) => {
     });
 
     await newCustomer.save();
-    res.json("Customer added!");
+    res.status(200).json(`Customer {${newCustomer.fullName}} added!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -52,11 +52,10 @@ const addCustomer = async (req, res) => {
 
 const updateCustomer = async (req, res) => {
   try {
-    const customer = await Customer.findById(req.params.id);
-    customer.userId = req.body.userId;
-    customer.defaultAddress = req.body.defaultAddress;
-    customer.save();
-    res.json("Customer updated!");
+    const customer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(`Customer {${customer.fullName}} updated!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -65,7 +64,7 @@ const updateCustomer = async (req, res) => {
 const deleteCustomer = async (req, res) => {
   try {
     await Customer.findByIdAndDelete(req.params.id);
-    res.json("Customer deleted!");
+    res.status(200).json("Customer deleted!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -75,7 +74,7 @@ const getCustomerLocation = async (req, res) => {
   try {
     const customer = await Customer.findById(req.params.id);
 
-    res.json({
+    res.status(200).json({
       latitude: customer.latitude,
       longitude: customer.longitude,
     });
@@ -90,11 +89,22 @@ const updateCustomerLocation = async (req, res) => {
     customer.latitude = req.body.latitude;
     customer.longitude = req.body.longitude;
     customer.save();
-    res.json("Customer location updated!");
+    res.status(200).json(`Customer ${customer.fullName} location updated!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
+
+const getCustomerInformation = async (req, res) => {
+  try {
+    const customer = await Customer.findById(req.params.id);
+    res.status(200).json(customer);
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
+  }
+};
+
+
 
 module.exports = {
   getAllCustomers,

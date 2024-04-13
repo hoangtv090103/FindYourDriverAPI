@@ -15,6 +15,7 @@ const customerRouter = require("./routes/customerRoute");
 const trackingRouter = require("./routes/trackingRoute");
 const vehicleRouter = require("./routes/vehicleRoute");
 const findDriverRouter = require("./routes/findDriverRoute");
+const ratingRouter = require("./routes/ratingRoute");
 
 
 
@@ -49,6 +50,7 @@ app.use("/vehicles", vehicleRouter);
 app.use("/drivers", driverRouter);
 app.use("/customers", customerRouter);
 app.use("/tracking", trackingRouter);
+app.use("/rating", ratingRouter);
 app.get("/verifyToken", authMiddleware, (req, res) => {
   res.json("Token is valid");
 });

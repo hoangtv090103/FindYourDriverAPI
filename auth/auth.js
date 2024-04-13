@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
   try {
-    console.log("Logging in");
     const { phoneEmail, password } = req.body;
     const user = await User.findOne({
       $or: [{ email: phoneEmail }, { phone: phoneEmail }],
@@ -16,7 +15,7 @@ const login = async (req, res) => {
       return res.status(400).json("Password is wrong");
     }
 
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     console.log(err);
     res.status(400).json(`Error: ${err}`);

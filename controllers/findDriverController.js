@@ -1,6 +1,54 @@
 const Driver = require("../models/driver");
 
 /**
+ * Async function to find a driver based on pickup and dropoff locations.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Array} an array of drivers sorted by distance
+ */
+const findDriverController = async (req, res) => {
+  try {
+    const { pickupLat, pickupLng } = req.body;
+
+    let position;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((success) => {
+        position = success;
+      });
+    } else {
+      return res.status(400).json("Geolocation is not supported");
+    }
+
+    const driver = await Driver.find({
+      available: true,
+    });
+
+    if (!driver) {
+      return res.status(400).json("No driver found");
+    }
+
+    const distList = driver.map((driver) => {
+      return {
+        distance: calculateDistance(
+          pickupLat,
+          pickupLng,
+          position.coords.latitude,
+          position.coords.longitude
+        ),
+        driver: driver,
+      };
+    });
+
+    // return the nearest driver
+    distList.sort((a, b) => a.distance - b.distance);
+    res.status(200).json(distList[0].driver);
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
+  }
+};
+
+/**
  * Calculate the distance between two points on the Earth given their latitude and longitude coordinates.
  *
  * @param {number} lat1 - The latitude of the first point
@@ -11,7 +59,7 @@ const Driver = require("../models/driver");
  * @return {number} The calculated distance between the two points
  */
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  if (lat1 == lat2 && lon1 == lon2) {
+  if (lat1 === lat2 && lon1 === lon2) {
     return 0;
   }
   // dist = =acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon2-lon1))*6371 (6371 is Earth radius in km.)
@@ -28,45 +76,6 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   dist = dist * 60 * 1.1515;
 
   return dist;
-};
-
-/**
- * Async function to find a driver based on pickup and dropoff locations.
- *
- * @param {Object} req - the request object
- * @param {Object} res - the response object
- * @return {Array} an array of drivers sorted by distance
- */
-const findDriverController = async (req, res) => {
-  try {
-    const { pickupLat, pickupLng } = req.body;
-
-    const driver = await Driver.find({
-      available: true,
-    });
-
-    if (!driver) {
-      return res.status(400).json("No driver found");
-    }
-
-    const distList = driver.map((driver) => {
-      return {
-        distance: calculateDistance(
-          pickupLat,
-          pickupLng,
-          driver.latitude,
-          driver.longitude
-        ),
-        driver: driver,
-      };
-    });
-
-    // return the nearest driver
-    distList.sort((a, b) => a.distance - b.distance);
-    res.json(distList[0]);
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
 };
 
 module.exports = { findDriverController };

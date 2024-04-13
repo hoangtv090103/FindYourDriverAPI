@@ -2,7 +2,8 @@ const bcrypt = require("bcrypt");
 
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
-  const passwordString = typeof password === 'string' ? password : await password;
+  const passwordString =
+    typeof password === "string" ? password : await password;
   const hashedPassword = await bcrypt.hash(passwordString, salt);
   return hashedPassword;
 };
