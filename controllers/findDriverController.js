@@ -11,15 +11,6 @@ const findDriverController = async (req, res) => {
   try {
     const { pickupLat, pickupLng } = req.body;
 
-    let position;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((success) => {
-        position = success;
-      });
-    } else {
-      return res.status(400).json("Geolocation is not supported");
-    }
-
     const driver = await Driver.find({
       available: true,
     });
