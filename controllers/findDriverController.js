@@ -20,14 +20,15 @@ const findDriverController = async (req, res) => {
     }
 
     const distList = driver.map((driver) => {
+      const distance = calculateDistance(
+        pickupLat,
+        pickupLng,
+        driver.latitude,
+        driver.longitude
+      );
       return {
-        distance: calculateDistance(
-          pickupLat,
-          pickupLng,
-          position.coords.latitude,
-          position.coords.longitude
-        ),
-        driver: driver,
+        driver,
+        distance,
       };
     });
 
