@@ -59,7 +59,7 @@ const updateDriver = async (req, res) => {
       new: true,
     });
 
-    res.json(`Driver {${driver.fullName}} updated!`);
+    res.status(200).json(`Driver {${driver.fullName}} updated!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

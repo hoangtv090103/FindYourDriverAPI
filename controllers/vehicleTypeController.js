@@ -3,7 +3,7 @@ const vehicleType = require("../models/vehicleType");
 const getAllVehicleTypes = async (req, res) => {
   try {
     const vehicleTypes = await vehicleType.find({});
-    res.json(vehicleTypes);
+    res.status(200).json(vehicleTypes);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

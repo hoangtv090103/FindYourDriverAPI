@@ -2,7 +2,7 @@ const Notification = require("../models/notification");
 
 const getAllNotifications = async (req, res) => {
   const notifications = await Notification.find();
-  res.json(notifications);
+  res.status(200).json(notifications);
 };
 
 /**
@@ -14,7 +14,7 @@ const getAllNotifications = async (req, res) => {
  */
 const getNotificationById = async (req, res) => {
   const notification = await Notification.findById(req.params.id);
-  res.json(notification);
+  res.status(200).json(notification);
 };
 
 /**
@@ -31,7 +31,7 @@ const addNotification = async (req, res) => {
   });
 
   await notification.save();
-  res.json("Notification added!");
+  res.status(200).json("Notification added!");
 };
 
 /**
@@ -46,7 +46,7 @@ const updateNotification = async (req, res) => {
   notification.userId = req.body.userId;
   notification.content = req.body.content;
   await notification.save();
-  res.json("Notification updated!");
+  res.status(200).json("Notification updated!");
 };
 
 /**
@@ -58,7 +58,7 @@ const updateNotification = async (req, res) => {
  */
 const deleteNotification = async (req, res) => {
   await Notification.findByIdAndDelete(req.params.id);
-  res.json("Notification deleted!");
+  res.status(200).json("Notification deleted!");
 };
 
 module.exports = {

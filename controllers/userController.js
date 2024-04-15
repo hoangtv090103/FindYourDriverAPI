@@ -6,7 +6,7 @@ const getAllUsers = async (req, res) => {
     const users = await User.find({});
     // res.render('addUser', { title: 'Add User' });
 
-    res.json(users);
+    res.status(200).json(users);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -15,7 +15,7 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -40,7 +40,7 @@ const addUser = async (req, res) => {
 
   try {
     await newUser.save();
-    res.json("User added!");
+    res.status(200).json("User added!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -54,7 +54,7 @@ const updateUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    res.json("User updated!");
+    res.status(200).json("User updated!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -63,7 +63,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.json("User deleted!");
+    res.status(200).json("User deleted!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

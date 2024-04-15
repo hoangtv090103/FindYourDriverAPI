@@ -51,9 +51,6 @@ app.use("/drivers", driverRouter);
 app.use("/customers", customerRouter);
 app.use("/tracking", trackingRouter);
 app.use("/rating", ratingRouter);
-app.get("/verifyToken", authMiddleware, (req, res) => {
-  res.json("Token is valid");
-});
 
 app.use("/find-driver", findDriverRouter);
 

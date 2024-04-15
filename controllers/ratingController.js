@@ -55,7 +55,7 @@ const updateRating = async (req, res) => {
 const deleteRating = async (req, res) => {
   try {
     await Rating.findByIdAndDelete(req.params.id);
-    res.json("Rating deleted!");
+    res.status(200).json("Rating deleted!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
