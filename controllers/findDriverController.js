@@ -10,14 +10,18 @@ const Vehicle = require("../models/vehicle");
 const findDriverController = async (req, res) => {
   try {
     const { pickupLat, pickupLng } = req.body;
-    const { vehicleTypeId } = req.body;
+    const { vehicleType } = req.body;
 
     if (!pickupLat || !pickupLng) {
       return res.status(400).json("Pickup location is required");
     }
 
+    const vehicleTypeId = await Vehicle.find({
+      name: vehicleType,
+    });
+
     const vehicles = await Vehicle.find({
-      _id: { $in: vehicleTypeId },
+      vehicleTypeId: vehicleTypeId._id,
     });
 
     if (!vehicles) {
@@ -27,7 +31,6 @@ const findDriverController = async (req, res) => {
     const drivers = await Driver.find({
       available: true,
       vehicleId: { $in: vehicles },
-      
     });
 
     if (!drivers) {
@@ -39,7 +42,7 @@ const findDriverController = async (req, res) => {
         pickupLat,
         pickupLng,
         driver.latitude,
-        driver.longitude,
+        driver.longitude
       );
 
       return {
