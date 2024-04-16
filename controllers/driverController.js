@@ -49,7 +49,7 @@ const addDriver = async (req, res) => {
     });
 
     await newDriver.save();
-    res.status(200).json(`Driver {${fullName}} added!`);
+    res.status(200).json(newDriver);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
@@ -69,6 +69,8 @@ const updateDriver = async (req, res) => {
 
 const deleteDriver = async (req, res) => {
   try {
+    const driver = await Driver.findById(req.params.id);
+    await User.findByIdAndDelete(driver.userId);
     await Driver.findByIdAndDelete(req.params.id);
     res.status(200).json("Driver deleted!");
   } catch (err) {

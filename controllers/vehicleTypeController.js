@@ -36,11 +36,11 @@ const addVehicleType = async (req, res) => {
 
 const updateVehicleType = async (req, res) => {
   try {
-    const vehicleTypeId = await vehicleType.findById(req.params.id);
-    vehicleTypeId.name = req.body.name;
-    vehicleTypeId.description = req.body.description;
-    vehicleTypeId.save();
-    res.status(200).json(`Vehicle type {${vehicleTypeId.name}} updated!`);
+    const vehicleTypeId = await vehicleType.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    )
+    res.status(200).json(`Vehicle type {${vehicleTypeId?.name}} updated!`);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

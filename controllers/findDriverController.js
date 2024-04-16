@@ -1,5 +1,5 @@
 const Driver = require("../models/driver");
-
+const Vehicle = require("../models/vehicle");
 /**
  * Async function to find a driver based on pickup and dropoff locations.
  *
@@ -10,22 +10,38 @@ const Driver = require("../models/driver");
 const findDriverController = async (req, res) => {
   try {
     const { pickupLat, pickupLng } = req.body;
+    const { vehicleTypeId } = req.body;
 
-    const driver = await Driver.find({
-      available: true,
+    if (!pickupLat || !pickupLng) {
+      return res.status(400).json("Pickup location is required");
+    }
+
+    const vehicles = await Vehicle.find({
+      _id: { $in: vehicleTypeId },
     });
 
-    if (!driver) {
+    if (!vehicles) {
+      return res.status(400).json("No vehicle found");
+    }
+
+    const drivers = await Driver.find({
+      available: true,
+      vehicleId: { $in: vehicles },
+      
+    });
+
+    if (!drivers) {
       return res.status(400).json("No driver found");
     }
 
-    const distList = driver.map((driver) => {
+    const distList = drivers.map((driver) => {
       const distance = calculateDistance(
         pickupLat,
         pickupLng,
         driver.latitude,
-        driver.longitude
+        driver.longitude,
       );
+
       return {
         driver,
         distance,
