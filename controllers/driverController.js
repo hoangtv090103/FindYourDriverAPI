@@ -44,6 +44,8 @@ const addDriver = async (req, res) => {
       fullName: fullName,
       licenseNumber: licenseNumber,
       userId: user._id,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
     });
 
     await newDriver.save();

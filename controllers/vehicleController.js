@@ -18,40 +18,37 @@ const getVehicleById = async (req, res) => {
   }
 };
 
-const addVehicle = async (
-  { body: { vehicleType: type, plateNumber: plate, driverId: driver } },
-  res
-) => {
+const addVehicle = async (req, res) => {
   try {
-    const newVehicle = new Vehicle({ type, plate, driver });
-    await newVehicle.save();
-    res.status(200).json(`Vehicle {${plate}} added!`);
-  } catch (error) {
-    res.status(400).json(`Error: ${error.message}`);
+    const vehicle = new Vehicle({
+      typeId: req.body.typeId,
+      licensePlate: req.body.licensePlate,
+      make: req.body.make,
+      model: req.body.model,
+      color: req.body.color,
+    });
+    await vehicle.save();
+    res.status(200).json(`Vehicle {${vehicle.licensePlate}} added!`);
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
   }
 };
 
 const updateVehicle = async (req, res) => {
   try {
-    const vehicle = await Vehicle.findByIdAndUpdate(
-      req.params.id,
-      {
-        vehicleType: req.body.vehicleType,
-        plateNumber: req.body.plateNumber,
-        driverId: req.body.driverId,
-      },
-      { new: true } // định dạng true để trả về đối tượng đã được cập nhật
-    );
-    res.status(200).json(`Vehicle {${vehicle.plateNumber}} updated!`);
-  } catch (error) {
-    res.status(400).json(`Error: ${error.message}`);
+    const vehicle = await Vehicle.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(vehicle);
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
   }
 };
 
 const deleteVehicle = async (req, res) => {
   try {
-    await Vehicle.findByIdAndDelete(req.params.id);
-    res.status(200).json("Vehicle deleted!");
+    const vehicle = await Vehicle.findByIdAndDelete(req.params.id);
+    res.status(200).json(vehicle);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }

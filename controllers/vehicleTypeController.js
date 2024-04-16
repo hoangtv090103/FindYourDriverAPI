@@ -48,8 +48,7 @@ const updateVehicleType = async (req, res) => {
 
 const deleteVehicleType = async (req, res) => {
   try {
-    const vehicleTypeId = await vehicleType.findById(req.params.id);
-    vehicleTypeId.delete();
+    const vehicleTypeId = await vehicleType.findByIdAndDelete(req.params.id);
     res.status(200).json("Vehicle type deleted!");
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
