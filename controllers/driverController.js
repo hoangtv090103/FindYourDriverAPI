@@ -14,7 +14,7 @@ const getAllDrivers = async (req, res) => {
 
 const getDriverById = async (req, res) => {
   try {
-    const driver = await Driver.findById(Number.parseInt(req.params.id));
+    const driver = await Driver.findById(req.params.id);
     res.status(200).json(driver);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
