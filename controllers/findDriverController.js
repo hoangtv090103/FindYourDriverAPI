@@ -27,7 +27,7 @@ const findDriverController = async (req, res) => {
     const vehicles = await Vehicle.find({ typeId: vehicleTypeId._id });
 
     if (!vehicles) {
-      return res.status(400).json("No vehicle found");
+      return res.status(200).json("No vehicle found");
     }
 
     const drivers = await Driver.find({
